@@ -1,6 +1,7 @@
 
 folder-structure/
 template.py
+my_idea.md
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
