@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "youtube-sentiment"
+version = "0.1.0"
+description = "youtube comments sentiment classification"
+authors = ["Saurav Thakur <sauravthakur1341@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
