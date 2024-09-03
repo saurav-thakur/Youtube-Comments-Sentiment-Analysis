@@ -7,6 +7,12 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = ">=3.10"
+numpy = "^2.1.0"
+ipykernel = "^6.29.5"
+pandas = "^2.2.2"
+matplotlib = "^3.9.2"
+nltk = "^3.9.1"
+textblob = "^0.18.0.post0"
 
 
 [build-system]
