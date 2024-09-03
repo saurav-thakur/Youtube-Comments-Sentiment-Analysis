@@ -2,6 +2,7 @@
 folder-structure/
 template.py
 my_idea.md
+*.csv
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
