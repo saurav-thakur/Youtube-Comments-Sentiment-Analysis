@@ -13,6 +13,8 @@ pandas = "^2.2.2"
 matplotlib = "^3.9.2"
 nltk = "^3.9.1"
 textblob = "^0.18.0.post0"
+python-dotenv = "^1.0.1"
+pymongo = {extras = ["srv"], version = "^4.8.0"}
 
 
 [build-system]
