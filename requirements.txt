@@ -1,0 +1,10 @@
+ipykernel
+pandas
+numpy
+matplotlib
+nltk
+python-dotentv==1.0.1
+pymongo[srv]
+scikit-learn
+tensorflow
+-e .

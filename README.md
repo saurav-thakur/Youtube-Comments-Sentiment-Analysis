@@ -160,30 +160,27 @@ To run the project locally, you need to have Python installed. Follow the steps 
 2. **Create a virtual environment:**
 
    ```bash
-   pip install poetry
-   poetry config virtualenvs.in-project true
-   poetry install
-   poetry shell
+   conda create --prefix venv python=3.10.0
    ```
 
 3. **If you want to add any extra packages:**
 
    ```bash
-   poetry add yourPackageName
+   pip install yourPackageName
    ```
 
 
 3. **To remove any packages:**
 
    ```bash
-   poetry remove yourPackageName
+   pip uninstall yourPackageName
    ```
 
 
-3. **To deactivate the poetry environment:**
+4. **To deactivate the poetry environment:**
 
    ```bash
-   deactivate
+   source deactivate
    ```
 
 <!-- ## Usage
