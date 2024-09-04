@@ -3,7 +3,7 @@ import os
 from youtube_sentiment.constants import DB_NAME,COLLECTION_NAME
 import pymongo
 import pandas as pd
-
+from youtube_sentiment.logger import logging
 load_dotenv()
 
 
@@ -15,7 +15,11 @@ class DatabaseConfig:
         self.collection = self.database[COLLECTION_NAME]
 
     def push_data(self):
-        records = self.collection.insert_many(self.dataset)
+        if COLLECTION_NAME in self.database.list_collection_names() and self.collection.count_documents({}) > 0:
+            logging.info(f"Collection '{COLLECTION_NAME}' already exists and has data. Data push aborted.")
+        else:
+            self.collection.insert_many(self.dataset)
+            logging.info(f"Data pushed to collection '{COLLECTION_NAME}'.")
 
 
 def push_data_config(data_path):
