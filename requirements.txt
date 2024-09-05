@@ -3,7 +3,7 @@ pandas
 numpy
 matplotlib
 nltk
-python-dotentv==1.0.1
+python-dotenv
 pymongo[srv]
 scikit-learn
 tensorflow
