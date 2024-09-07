@@ -1,0 +1,13 @@
+columns:
+  - text: category
+  - label: category
+
+categorical_columns:
+  - text
+  - label
+
+tokenize_column:
+  - text
+
+label_encoding_column:
+  - label
