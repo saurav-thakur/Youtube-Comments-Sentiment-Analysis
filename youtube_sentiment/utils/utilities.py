@@ -2,6 +2,7 @@ import json
 import os,sys
 import pandas as pd
 import yaml
+import pickle
 from youtube_sentiment.logger import logging
 from youtube_sentiment.exception import YoutubeException
 
@@ -28,3 +29,7 @@ def read_csv_data(path: str) ->pd.DataFrame:
         return df
     except Exception as e:
         raise YoutubeException(e,sys)
+    
+def save_preprocessed_object(preprocessed_object_path: str, preprocessed_object) -> None:
+    with open(preprocessed_object_path, 'wb') as handle:
+        pickle.dump(preprocessed_object, handle, protocol=pickle.HIGHEST_PROTOCOL)
