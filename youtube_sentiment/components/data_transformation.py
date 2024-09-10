@@ -7,7 +7,7 @@ from youtube_sentiment.exception import YoutubeException
 from youtube_sentiment.entity.config_entity import DataTransformationConfig
 from youtube_sentiment.entity.artifact_entity import DataValidationArtifact,DataTransformationArtifact, DataIngestionArtifact
 from youtube_sentiment.utils.utilities import read_csv_data,read_yaml_file,save_preprocessed_object
-from youtube_sentiment.constants import DATA_TRANSFORMATION_PAD_SEQUENCES_PADDING,DATA_TRANSFORMATION_PAD_SEQUENCES_MAX_LEN
+from youtube_sentiment.constants import DATA_TRANSFORMATION_PAD_SEQUENCES_PADDING,DATA_TRANSFORMATION_PAD_SEQUENCES_MAX_LEN, DATA_INGESTION_DIR_NAME, DATA_INGESTION_FEATURE_STORE_DIR, ARTIFACT_DIR,DATSET_FILE_NAME
 
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.utils import pad_sequences
@@ -26,17 +26,22 @@ class DataTransformation:
         try:
             if self.data_validation_artifact.validation_status:
                 logging.info("loading the ingested data")
+                
                 train_data = read_csv_data(self.data_ingestion_artifact.train_file_path)
                 test_data = read_csv_data(self.data_ingestion_artifact.test_file_path)
+                
+                logging.info("Concatenating train and test to make a single data for tokenization.")
+                df = pd.concat([train_data,test_data],axis=0)
 
                 logging.info("tokenizing the data")
                 tokenizer = Tokenizer()
-                tokenizer.fit_on_texts(self.schema_file["target_column"])
+                tokenizer.fit_on_texts(df[self.schema_file['tokenize_column']].values.tolist())
+                logging.info(f"number of sentences or rows {tokenizer.document_count}")
+                
+                train_data_tokenized = tokenizer.texts_to_sequences(train_data[self.schema_file['tokenize_column']].values.tolist())
+                test_data_tokenized = tokenizer.texts_to_sequences(test_data[self.schema_file['tokenize_column']].values.tolist())
 
-                train_data_tokenized = tokenizer.texts_to_sequences(train_data)
-                test_data_tokenized = tokenizer.texts_to_sequences(test_data)
-
-                logging.info("savng the tokenizer")
+                logging.info("saving the tokenizer")
                 dir_name = os.path.dirname(self.data_transformation_config.data_transformation_preprocessed_tokenizer)
                 os.makedirs(dir_name,exist_ok=True)
                 save_preprocessed_object(self.data_transformation_config.data_transformation_preprocessed_tokenizer,tokenizer)
@@ -52,7 +57,7 @@ class DataTransformation:
                 np.save(self.data_transformation_config.data_transformation_transformed_train_data,train_data_tokenized)
                 np.save(self.data_transformation_config.data_transformation_transformed_test_data,test_data_tokenized)
                 
-                logging.info("concatenating the transformed data and its label")
+                # logging.info("concatenating the transformed data and its label")
                 # train_data_transformed = np.concatenate([train_data_padded_sequences,train_data[self.schema_file["target_column"]]],axis=1)
                 # test_data_transformed = np.concatenate([test_data_padded_sequences,test_data[self.schema_file["target_column"]]],axis=1)
 
