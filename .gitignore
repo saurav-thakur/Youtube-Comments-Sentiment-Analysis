@@ -2,8 +2,12 @@
 folder-structure/
 template.py
 my_idea.md
-*.csv
 venv-youtube-sentiment
+
+# artifacts
+*.csv
+*.pkl
+*.npy
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

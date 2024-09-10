@@ -27,6 +27,15 @@ DATA_VALIDATION_DIR_NAME: str = "data_validation"
 # data transformation constants
 CONFIG_FILE_PATH: str = "config"
 SCHEMA_FILE_NAME: str = "schema.yaml"
+DATA_TRANSFORMATION_DIR_NAME: str = "data_transformation"
+DATA_TRANSFORMATION_TRANSFORMED_DATA_DIR: str = "transformed"
+DATA_TRANSFORMATION_TRANSFORMED_DATA_TRAIN: str = "transformed_train.npy"
+DATA_TRANSFORMATION_TRANSFORMED_DATA_TEST: str = "transformed_test.npy"
+DATA_TRANSFORMATION_PREPROCESSED_OBJECT_DATA_DIR: str = "preprocessed_objects"
+DATA_TRANSFORMATION_TOKENIZER_OBJECT: str = "tokenizer.pkl"
+DATA_TRANSFORMATION_LABEL_ENCODED_OBJECT: str = "label_encoded.pkl"
 
+DATA_TRANSFORMATION_PAD_SEQUENCES_PADDING = "post"
+DATA_TRANSFORMATION_PAD_SEQUENCES_MAX_LEN = 50
 
 # model constants
