@@ -32,6 +32,8 @@ class DataTransformationConfig:
     data_transformation_dir: str = os.path.join(training_pipline_config.artifact_dir,DATA_TRANSFORMATION_DIR_NAME)
     data_transformation_transformed_train_data: str = os.path.join(data_transformation_dir,DATA_TRANSFORMATION_TRANSFORMED_DATA_DIR,DATA_TRANSFORMATION_TRANSFORMED_DATA_TRAIN)
     data_transformation_transformed_test_data: str = os.path.join(data_transformation_dir,DATA_TRANSFORMATION_TRANSFORMED_DATA_DIR,DATA_TRANSFORMATION_TRANSFORMED_DATA_TEST)
+    data_transformation_transformed_train_label: str = os.path.join(data_transformation_dir,DATA_TRANSFORMATION_TRANSFORMED_DATA_DIR,DATA_TRANSFORMATION_TRANSFORMED_LABEL_TRAIN)
+    data_transformation_transformed_test_label: str = os.path.join(data_transformation_dir,DATA_TRANSFORMATION_TRANSFORMED_DATA_DIR,DATA_TRANSFORMATION_TRANSFORMED_LABEL_TEST)
     data_transformation_preprocessed_tokenizer: str = os.path.join(data_transformation_dir,DATA_TRANSFORMATION_PREPROCESSED_OBJECT_DATA_DIR,DATA_TRANSFORMATION_TOKENIZER_OBJECT)
     data_transformation_preprocessed_label_encoded: str = os.path.join(data_transformation_dir,DATA_TRANSFORMATION_PREPROCESSED_OBJECT_DATA_DIR,DATA_TRANSFORMATION_LABEL_ENCODED_OBJECT)
     schema_file: str = os.path.join(CONFIG_FILE_PATH,SCHEMA_FILE_NAME)

@@ -7,7 +7,7 @@ from youtube_sentiment.exception import YoutubeException
 from youtube_sentiment.entity.config_entity import DataTransformationConfig
 from youtube_sentiment.entity.artifact_entity import DataValidationArtifact,DataTransformationArtifact, DataIngestionArtifact
 from youtube_sentiment.utils.utilities import read_csv_data,read_yaml_file,save_preprocessed_object
-from youtube_sentiment.constants import DATA_TRANSFORMATION_PAD_SEQUENCES_PADDING,DATA_TRANSFORMATION_PAD_SEQUENCES_MAX_LEN, DATA_INGESTION_DIR_NAME, DATA_INGESTION_FEATURE_STORE_DIR, ARTIFACT_DIR,DATSET_FILE_NAME
+from youtube_sentiment.constants import DATA_TRANSFORMATION_PAD_SEQUENCES_PADDING,DATA_TRANSFORMATION_PAD_SEQUENCES_MAX_LEN, DATA_TRANSFORMATION_POSITIVE_SENTIMENT_MAP, DATA_TRANSFORMATION_NEGATIVE_SENTIMENT_MAP
 
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.utils import pad_sequences
@@ -21,6 +21,22 @@ class DataTransformation:
             self.schema_file = read_yaml_file(self.data_transformation_config.schema_file)
         except Exception as e:
             raise YoutubeException(e,sys)    
+        
+    
+    def map_sentiments(self,df: pd.DataFrame) -> pd.DataFrame:
+        """
+        This function maps the sentiment values to numeric labels.
+        
+        Args:
+            df (pd.DataFrame): The dataframe containing the data.
+            target_column (str): The name of the target column with sentiment values.
+        
+        Returns:
+            pd.DataFrame: DataFrame with the target column mapped to numeric labels.
+        """
+        sentiment_mapping = {"positive": DATA_TRANSFORMATION_POSITIVE_SENTIMENT_MAP, 'negative': DATA_TRANSFORMATION_NEGATIVE_SENTIMENT_MAP}
+        df[self.schema_file['target_column']] = df[self.schema_file['target_column']].replace(sentiment_mapping)
+        return df
     
     def initiate_transform_data(self)->DataTransformationArtifact:
         try:
@@ -29,7 +45,13 @@ class DataTransformation:
                 
                 train_data = read_csv_data(self.data_ingestion_artifact.train_file_path)
                 test_data = read_csv_data(self.data_ingestion_artifact.test_file_path)
-                
+
+                logging.info("mapping sentiments")
+                train_data = self.map_sentiments(train_data)
+                test_data = self.map_sentiments(test_data)
+
+                logging.info("sentiments mapped")
+
                 logging.info("Concatenating train and test to make a single data for tokenization.")
                 df = pd.concat([train_data,test_data],axis=0)
 
@@ -54,14 +76,17 @@ class DataTransformation:
                 
                 dir_name = os.path.dirname(self.data_transformation_config.data_transformation_transformed_train_data)
                 os.makedirs(dir_name,exist_ok=True)
+
+                logging.info("saving the data as npy format")
                 np.save(self.data_transformation_config.data_transformation_transformed_train_data,train_data_tokenized)
                 np.save(self.data_transformation_config.data_transformation_transformed_test_data,test_data_tokenized)
-                
-                # logging.info("concatenating the transformed data and its label")
-                # train_data_transformed = np.concatenate([train_data_padded_sequences,train_data[self.schema_file["target_column"]]],axis=1)
-                # test_data_transformed = np.concatenate([test_data_padded_sequences,test_data[self.schema_file["target_column"]]],axis=1)
 
-                logging.info("data transformed")
+                logging.info("saving the labels as npy format")
+                np.save(self.data_transformation_config.data_transformation_transformed_train_label,train_data[self.schema_file['target_column']].values)
+                np.save(self.data_transformation_config.data_transformation_transformed_test_label,test_data[self.schema_file['target_column']].values)
+
+                logging.info("data and labels saved as numpy file")
+                
                 data_transformation_artifact = DataTransformationArtifact(data_transformation_transformed_train_data=train_data_padded_sequences,
                                                                         data_transformation_transformed_test_data=test_data_padded_sequences)
                 return data_transformation_artifact
