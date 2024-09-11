@@ -86,9 +86,11 @@ class DataTransformation:
                 np.save(self.data_transformation_config.data_transformation_transformed_test_label,test_data[self.schema_file['target_column']].values)
 
                 logging.info("data and labels saved as numpy file")
-                
-                data_transformation_artifact = DataTransformationArtifact(data_transformation_transformed_train_data=train_data_padded_sequences,
-                                                                        data_transformation_transformed_test_data=test_data_padded_sequences)
+
+                data_transformation_artifact = DataTransformationArtifact(data_transformation_transformed_train_data=self.data_transformation_config.data_transformation_transformed_train_data,
+                                                                        data_transformation_transformed_test_data=self.data_transformation_config.data_transformation_transformed_test_data,
+                                                                        data_transformation_transformed_train_label=self.data_transformation_config.data_transformation_transformed_train_label,
+                                                                        data_transformation_transformed_test_label=self.data_transformation_config.data_transformation_transformed_test_label)
                 return data_transformation_artifact
             else:
                 raise Exception(self.data_validation_artifact.message)

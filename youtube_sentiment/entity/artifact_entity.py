@@ -15,3 +15,5 @@ class DataValidationArtifact:
 class DataTransformationArtifact:
     data_transformation_transformed_train_data: str
     data_transformation_transformed_test_data: str
+    data_transformation_transformed_train_label: str
+    data_transformation_transformed_test_label: str
