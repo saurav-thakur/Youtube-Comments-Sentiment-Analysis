@@ -10,3 +10,10 @@ class DataIngestionArtifact:
 class DataValidationArtifact:
     validation_status: bool
     message: str
+
+@dataclass
+class DataTransformationArtifact:
+    data_transformation_transformed_train_data: str
+    data_transformation_transformed_test_data: str
+    data_transformation_transformed_train_label: str
+    data_transformation_transformed_test_label: str

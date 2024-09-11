@@ -9,5 +9,5 @@ categorical_columns:
 tokenize_column:
   - text
 
-label_encoding_column:
+target_column:
   - label
