@@ -69,7 +69,22 @@ class DataValidation:
                 validation_status=validation_status,
                 message=validation_error_message
             )
+            self.data_validation_config.data_validation_dir
             logging.info(f"Data validation artifact: {data_validation_artifact}")
+
+            logging.info(f"writing the status to data validation dir")
+            os.makedirs(self.data_validation_config.data_validation_dir,exist_ok=True)
+            file_path = os.path.join(self.data_validation_config.data_validation_file)
+
+            json_data = {
+                "validation_status":data_validation_artifact.validation_status,
+                "message":data_validation_artifact.message
+            }
+            with open(file_path,"w") as json_file:
+                json.dump(json_data, json_file, indent=4)
+            
+            logging.info(f"data validation completed")
+
             return data_validation_artifact
         except Exception as e:
             raise YoutubeException(e,sys)

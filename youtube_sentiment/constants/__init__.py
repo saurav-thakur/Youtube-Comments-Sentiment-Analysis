@@ -22,6 +22,7 @@ DATA_INGESTION_TRAIN_TEST_SPLIT_RATIO = 0.2
 
 # data validation
 DATA_VALIDATION_DIR_NAME: str = "data_validation"
+DATA_VALIDATION_FILE_NAME: str = "data_validation.json"
 
 
 # data transformation constants

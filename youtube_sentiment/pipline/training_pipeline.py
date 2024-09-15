@@ -60,13 +60,13 @@ class TrainingPipeline:
             logging.info("Data Ingestion Completed")
 
             logging.info("Data Validation Started")
-            # data_validation_artifact = self.start_data_validation(data_ingestion_artifact)
+            data_validation_artifact = self.start_data_validation(data_ingestion_artifact)
             
-            data_validation_artifact = DataValidationArtifact(
-                validation_status=True,
-                message="NOT IMPLEMENTED"
-            )
-            logging.info("Data Validation Completed")
+            # data_validation_artifact = DataValidationArtifact(
+            #     validation_status=True,
+            #     message="NOT IMPLEMENTED"
+            # )
+            # logging.info("Data Validation Completed")
 
 
             logging.info("Data Transformation Started")
