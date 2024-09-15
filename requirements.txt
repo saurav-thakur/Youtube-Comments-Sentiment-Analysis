@@ -7,4 +7,5 @@ python-dotenv
 pymongo[srv]
 scikit-learn
 tensorflow
+pytest
 -e .

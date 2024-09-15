@@ -25,6 +25,7 @@ class DataIngestionConfig:
 @dataclass
 class DataValidationConfig:
     data_validation_dir: str = os.path.join(training_pipline_config.artifact_dir,DATA_VALIDATION_DIR_NAME)
+    data_validation_file: str = os.path.join(training_pipline_config.artifact_dir,DATA_VALIDATION_DIR_NAME,DATA_VALIDATION_FILE_NAME)
     schema_file: str = os.path.join(CONFIG_FILE_PATH,SCHEMA_FILE_NAME)
 
 @dataclass
