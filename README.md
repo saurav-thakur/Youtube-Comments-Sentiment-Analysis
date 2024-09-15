@@ -29,9 +29,9 @@ This structure is organized to facilitate clean and modular code, making it easi
 #### Folder Structure Overview
 
 ```
-project_name/
+youtube_sentiment/
 │
-├── project_name/
+├── youtube_sentiment/
 │   ├── __init__.py
 │   ├── components/
 │   │   ├── __init__.py
@@ -84,10 +84,10 @@ project_name/
 
 ## Project Directory and Files Description
 
-### 1. `project_name/`
-   - **`__init__.py`**: Initializes the `project_name` package.
+### 1. `youtube_sentiment/`
+   - **`__init__.py`**: Initializes the `youtube_sentiment` package.
 
-### 2. `project_name/components/`
+### 2. `youtube_sentiment/components/`
    - **`__init__.py`**: Initializes the `components` module.
    - **`data_ingestion.py`**: Contains functions and classes for ingesting raw data from various sources.
    - **`data_validation.py`**: Handles validation of the data to ensure it meets the required standards before processing.
@@ -96,29 +96,29 @@ project_name/
    - **`model_evaluation.py`**: Includes methods to evaluate the performance of the trained models.
    - **`model_pusher.py`**: Manages the deployment or saving of the trained model to a production environment.
 
-### 3. `project_name/configuration/`
+### 3. `youtube_sentiment/configuration/`
    - **`__init__.py`**: Initializes the `configuration` module, which handles configuration management.
 
-### 4. `project_name/constants/`
+### 4. `youtube_sentiment/constants/`
    - **`__init__.py`**: Initializes the `constants` module, which contains project-wide constants.
 
-### 5. `project_name/entity/`
+### 5. `youtube_sentiment/entity/`
    - **`__init__.py`**: Initializes the `entity` module.
    - **`config_entity.py`**: Defines configuration entities that manage configuration settings.
    - **`artifact_entity.py`**: Contains artifact entities that represent outputs at different stages of the pipeline.
 
-### 6. `project_name/exception/`
+### 6. `youtube_sentiment/exception/`
    - **`__init__.py`**: Initializes the `exception` module for custom exception handling.
 
-### 7. `project_name/logger/`
+### 7. `youtube_sentiment/logger/`
    - **`__init__.py`**: Initializes the `logger` module for logging events, errors, and other significant occurrences.
 
-### 8. `project_name/pipeline/`
+### 8. `youtube_sentiment/pipeline/`
    - **`__init__.py`**: Initializes the `pipeline` module.
    - **`training_pipeline.py`**: Manages the end-to-end training pipeline, coordinating data ingestion, transformation, model training, and evaluation.
    - **`prediction_pipeline.py`**: Manages the prediction pipeline, which uses the trained model to make predictions on new data.
 
-### 9. `project_name/utils/`
+### 9. `youtube_sentiment/utils/`
    - **`__init__.py`**: Initializes the `utils` module.
    - **`utilities.py`**: Contains utility functions that support various components across the project.
 
