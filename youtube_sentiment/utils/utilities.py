@@ -3,6 +3,7 @@ import os,sys
 import pandas as pd
 import yaml
 import pickle
+import tensorflow as tf
 from youtube_sentiment.logger import logging
 from youtube_sentiment.exception import YoutubeException
 
@@ -33,3 +34,15 @@ def read_csv_data(path: str) ->pd.DataFrame:
 def save_preprocessed_object(preprocessed_object_path: str, preprocessed_object) -> None:
     with open(preprocessed_object_path, 'wb') as handle:
         pickle.dump(preprocessed_object, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+def load_tokenizer(tokenizer_path):
+    with open(tokenizer_path, 'rb') as f:
+        tokenizer = pickle.load(f)
+    return tokenizer
+
+def save_keras_model(model,path):
+    model.save(path)
+    
+def load_keras_model(model_path):
+    model = tf.keras.models.load_model(model_path)
+    return model

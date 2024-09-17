@@ -90,7 +90,8 @@ class DataTransformation:
                 data_transformation_artifact = DataTransformationArtifact(data_transformation_transformed_train_data=self.data_transformation_config.data_transformation_transformed_train_data,
                                                                         data_transformation_transformed_test_data=self.data_transformation_config.data_transformation_transformed_test_data,
                                                                         data_transformation_transformed_train_label=self.data_transformation_config.data_transformation_transformed_train_label,
-                                                                        data_transformation_transformed_test_label=self.data_transformation_config.data_transformation_transformed_test_label)
+                                                                        data_transformation_transformed_test_label=self.data_transformation_config.data_transformation_transformed_test_label,
+                                                                        data_transformation_tokenizer=self.data_transformation_config.data_transformation_preprocessed_tokenizer)
                 return data_transformation_artifact
             else:
                 raise Exception(self.data_validation_artifact.message)
