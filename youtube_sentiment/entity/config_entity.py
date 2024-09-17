@@ -38,3 +38,11 @@ class DataTransformationConfig:
     data_transformation_preprocessed_tokenizer: str = os.path.join(data_transformation_dir,DATA_TRANSFORMATION_PREPROCESSED_OBJECT_DATA_DIR,DATA_TRANSFORMATION_TOKENIZER_OBJECT)
     data_transformation_preprocessed_label_encoded: str = os.path.join(data_transformation_dir,DATA_TRANSFORMATION_PREPROCESSED_OBJECT_DATA_DIR,DATA_TRANSFORMATION_LABEL_ENCODED_OBJECT)
     schema_file: str = os.path.join(CONFIG_FILE_PATH,SCHEMA_FILE_NAME)
+
+@dataclass
+class ModelTrainerConfig:
+    model_trainer_dir_name:str = os.path.join(training_pipline_config.artifact_dir,MODEL_TRAINER_DIR_NAME)
+    model_trainer_trained_model: str = os.path.join(model_trainer_dir_name,MODEL_TRAINER_TRAINED_MODEL_DIR)
+    model_trainer_config_file: str = os.path.join(CONFIG_FILE_PATH,MODEL_TRAINER_CONFIG_FILE_PATH)
+    model_trainer_trained_model_name: str = MODEL_TRAINER_TRAINED_MODEL_NAME
+    model_trainer_expected_score = MODEL_TRAINER_TRAINED_EXPECTED_SCORE

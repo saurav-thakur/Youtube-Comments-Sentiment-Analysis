@@ -17,3 +17,17 @@ class DataTransformationArtifact:
     data_transformation_transformed_test_data: str
     data_transformation_transformed_train_label: str
     data_transformation_transformed_test_label: str
+    data_transformation_tokenizer: str
+
+
+@dataclass
+class ClassificationMetricArtifact:
+    f1_score: float
+    precision_score: float
+    recall_score: float
+    accuracy_score: float
+
+@dataclass
+class ModelTrainerArtifact:
+    trained_model_file_path: str
+    metric_artifact: ClassificationMetricArtifact
