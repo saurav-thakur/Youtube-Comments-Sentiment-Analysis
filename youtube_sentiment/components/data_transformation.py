@@ -4,7 +4,7 @@ import numpy as np
 
 from youtube_sentiment.logger import logging
 from youtube_sentiment.exception import YoutubeException
-from youtube_sentiment.entity.config_entity import DataTransformationConfig
+from youtube_sentiment.entity.config_entity import DataTransformationConfig, DataIngestionConfig
 from youtube_sentiment.entity.artifact_entity import DataValidationArtifact,DataTransformationArtifact, DataIngestionArtifact
 from youtube_sentiment.utils.utilities import read_csv_data,read_yaml_file,save_preprocessed_object
 from youtube_sentiment.constants import DATA_TRANSFORMATION_PAD_SEQUENCES_PADDING,DATA_TRANSFORMATION_PAD_SEQUENCES_MAX_LEN, DATA_TRANSFORMATION_POSITIVE_SENTIMENT_MAP, DATA_TRANSFORMATION_NEGATIVE_SENTIMENT_MAP
@@ -57,11 +57,12 @@ class DataTransformation:
 
                 logging.info("tokenizing the data")
                 tokenizer = Tokenizer()
-                tokenizer.fit_on_texts(df[self.schema_file['tokenize_column']].values.tolist())
+                tokenizer.fit_on_texts(df["text"])
                 logging.info(f"number of sentences or rows {tokenizer.document_count}")
+
                 
-                train_data_tokenized = tokenizer.texts_to_sequences(train_data[self.schema_file['tokenize_column']].values.tolist())
-                test_data_tokenized = tokenizer.texts_to_sequences(test_data[self.schema_file['tokenize_column']].values.tolist())
+                train_data_tokenized = tokenizer.texts_to_sequences(train_data["text"])
+                test_data_tokenized = tokenizer.texts_to_sequences(test_data["text"])
 
                 logging.info("saving the tokenizer")
                 dir_name = os.path.dirname(self.data_transformation_config.data_transformation_preprocessed_tokenizer)
@@ -78,8 +79,8 @@ class DataTransformation:
                 os.makedirs(dir_name,exist_ok=True)
 
                 logging.info("saving the data as npy format")
-                np.save(self.data_transformation_config.data_transformation_transformed_train_data,train_data_tokenized)
-                np.save(self.data_transformation_config.data_transformation_transformed_test_data,test_data_tokenized)
+                np.save(self.data_transformation_config.data_transformation_transformed_train_data,train_data_padded_sequences)
+                np.save(self.data_transformation_config.data_transformation_transformed_test_data,test_data_padded_sequences)
 
                 logging.info("saving the labels as npy format")
                 np.save(self.data_transformation_config.data_transformation_transformed_train_label,train_data[self.schema_file['target_column']].values)
