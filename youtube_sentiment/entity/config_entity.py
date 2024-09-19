@@ -44,5 +44,5 @@ class ModelTrainerConfig:
     model_trainer_dir_name:str = os.path.join(training_pipline_config.artifact_dir,MODEL_TRAINER_DIR_NAME)
     model_trainer_trained_model: str = os.path.join(model_trainer_dir_name,MODEL_TRAINER_TRAINED_MODEL_DIR)
     model_trainer_config_file: str = os.path.join(CONFIG_FILE_PATH,MODEL_TRAINER_CONFIG_FILE_PATH)
-    model_trainer_trained_model_name: str = MODEL_TRAINER_TRAINED_MODEL_NAME
+    model_trainer_trained_model_name: str = os.path.join(model_trainer_trained_model,MODEL_TRAINER_TRAINED_MODEL_NAME)
     model_trainer_expected_score = MODEL_TRAINER_TRAINED_EXPECTED_SCORE
