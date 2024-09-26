@@ -46,3 +46,18 @@ class ModelTrainerConfig:
     model_trainer_config_file: str = os.path.join(CONFIG_FILE_PATH,MODEL_TRAINER_CONFIG_FILE_PATH)
     model_trainer_trained_model_name: str = os.path.join(model_trainer_trained_model,MODEL_TRAINER_TRAINED_MODEL_NAME)
     model_trainer_expected_score = MODEL_TRAINER_TRAINED_EXPECTED_SCORE
+
+
+@dataclass
+class ModelEvaluationConfig:
+    changed_threshold_score:float = MODEL_EVALUATION_THRESHOLD_SCORE
+    bucket_name: str = MODEL_BUCKET_NAME
+    s3_model_key_path: str = MODEL_TRAINER_TRAINED_MODEL_NAME
+
+
+@dataclass
+class ModelPusherConfig:
+    bucket_name: str = MODEL_BUCKET_NAME
+    s3_model_key_path: str = MODEL_TRAINER_TRAINED_MODEL_NAME
+
+

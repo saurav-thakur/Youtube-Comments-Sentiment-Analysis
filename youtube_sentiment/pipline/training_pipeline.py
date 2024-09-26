@@ -5,9 +5,11 @@ from youtube_sentiment.components.data_ingestion import DataIngestion
 from youtube_sentiment.components.data_validation import DataValidation
 from youtube_sentiment.components.data_transformation import DataTransformation
 from youtube_sentiment.components.model_trainer import ModelTrainer
+from youtube_sentiment.components.model_evaluation import ModelEvaluation
+from youtube_sentiment.components.model_pusher import ModelPusher
 
-from youtube_sentiment.entity.config_entity import DataIngestionConfig,DataValidationConfig,DataTransformationConfig, ModelTrainerConfig
-from youtube_sentiment.entity.artifact_entity import DataIngestionArtifact,DataValidationArtifact, DataTransformationArtifact, ModelTrainerArtifact
+from youtube_sentiment.entity.config_entity import DataIngestionConfig,DataValidationConfig,DataTransformationConfig, ModelTrainerConfig,ModelEvaluationConfig,ModelPusherConfig
+from youtube_sentiment.entity.artifact_entity import DataIngestionArtifact,DataValidationArtifact, DataTransformationArtifact, ModelTrainerArtifact,ModelEvaluationArtifact,ModelPusherArtifact
 
 
 class TrainingPipeline:
@@ -16,6 +18,8 @@ class TrainingPipeline:
         self.data_validation_config = DataValidationConfig()
         self.data_transformation_config = DataTransformationConfig()
         self.model_trainer_config = ModelTrainerConfig()
+        self.model_evaluation_config = ModelEvaluationConfig()
+        self.model_pusher_config = ModelPusherConfig()
 
 
     def start_data_ingestion(self) ->DataIngestionArtifact:
@@ -63,6 +67,31 @@ class TrainingPipeline:
         except Exception as e:
             raise YoutubeException(e,sys)
         
+    def start_model_evaluation(self,data_transformation_artifact: DataTransformationArtifact,model_trainer_artifact:ModelTrainerArtifact) ->ModelEvaluationArtifact:
+
+        try:
+            model_evaluation = ModelEvaluation(
+                model_eval_config=self.model_evaluation_config,
+                data_transformation_artifact=data_transformation_artifact,
+                model_trainer_artifact=model_trainer_artifact
+            )
+            model_evaluation_artifact  = model_evaluation.initiate_model_evaluation()
+            return model_evaluation_artifact
+        except Exception as e:
+            return YoutubeException(e,sys)
+        
+    def start_model_pusher(self,model_evaluation_artifact:ModelEvaluationArtifact)->ModelPusherArtifact:
+        try:
+            model_pusher = ModelPusher(
+                model_evaluation_artifact=model_evaluation_artifact,model_pusher_config=self.model_pusher_config
+            )
+            
+            model_pusher_artifact = model_pusher.initiate_model_pusher()
+            return model_pusher_artifact
+        except Exception as e:
+            raise YoutubeException(e,sys)
+
+        
     def run_pipeline(self)->None:
         try:
             logging.info("Data Ingestion Started")
@@ -91,6 +120,17 @@ class TrainingPipeline:
             logging.info("Model Trainer Started")
             model_trainer_artifact = self.start_model_training(data_transformation_artifact=data_transformation_artifact)
             logging.info("Model Trainer Completed")
+
+            logging.info("Model Evaluation Started")
+            model_evaluation_artifact = self.start_model_evaluation(data_transformation_artifact=data_transformation_artifact,model_trainer_artifact=model_trainer_artifact)
+            logging.info("Model Evaluation Completed")
+
+            logging.info("LOGGING MODEL EVAL ARTIFACT")
+            logging.info(model_evaluation_artifact)
+
+            logging.info("Model Pusher Started")
+            model_pusher_artifact = self.start_model_pusher(model_evaluation_artifact=model_evaluation_artifact)
+            logging.info("Model Pusher Completed")
 
 
         except Exception as e:
