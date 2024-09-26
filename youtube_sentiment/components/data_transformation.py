@@ -22,8 +22,8 @@ class DataTransformation:
         except Exception as e:
             raise YoutubeException(e,sys)    
         
-    
-    def map_sentiments(self,df: pd.DataFrame) -> pd.DataFrame:
+    @staticmethod
+    def map_sentiments(df: pd.DataFrame) -> pd.DataFrame:
         """
         This function maps the sentiment values to numeric labels.
         
@@ -35,7 +35,7 @@ class DataTransformation:
             pd.DataFrame: DataFrame with the target column mapped to numeric labels.
         """
         sentiment_mapping = {"positive": DATA_TRANSFORMATION_POSITIVE_SENTIMENT_MAP, 'negative': DATA_TRANSFORMATION_NEGATIVE_SENTIMENT_MAP}
-        df[self.schema_file['target_column']] = df[self.schema_file['target_column']].replace(sentiment_mapping)
+        df["label"] = df["label"].replace(sentiment_mapping)
         return df
     
     def initiate_transform_data(self)->DataTransformationArtifact:

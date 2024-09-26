@@ -31,3 +31,22 @@ class ClassificationMetricArtifact:
 class ModelTrainerArtifact:
     trained_model_file_path: str
     metric_artifact: ClassificationMetricArtifact
+
+@dataclass
+class ModelEvaluationArtifact:
+    is_model_accepted: bool
+    curr_and_prod_model_accuracy_difference: float
+    s3_model_path: str
+    trained_model_path: str
+
+@dataclass
+class EvaluateModelResponse:
+    trained_model_f1_score: float
+    best_model_f1_score: float
+    is_model_accepted: bool
+    difference: float
+
+@dataclass
+class ModelPusherArtifact:
+    bucket_name: str
+    s3_model_path: str
