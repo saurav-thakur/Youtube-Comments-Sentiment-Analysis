@@ -2,7 +2,6 @@ import sys
 from pandas import DataFrame
 from youtube_sentiment.cloud_storage.aws_storage import SimpleStorageService
 from youtube_sentiment.exception import YoutubeException
-from youtube_sentiment.pipline.prediction_pipeline import YoutubeSentimentPredictor
 from youtube_sentiment.logger import logging
 
 
@@ -37,6 +36,6 @@ class YoutubeS3SentimentClassification:
         try:
             if self.loaded_model is None:
                 self.loaded_model = self.load_model()
-            return self.loaded_model.predict(dataframe=dataframe)
+            return self.loaded_model.predict(dataframe)
         except Exception as e:
             raise YoutubeException(e,sys)
