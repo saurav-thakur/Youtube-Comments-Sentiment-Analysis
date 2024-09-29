@@ -5,7 +5,7 @@ from botocore.exceptions import ClientError
 from pandas import DataFrame,read_csv
 from typing import Union,List
 from io import StringIO
-
+import tempfile
 from youtube_sentiment.exception import YoutubeException
 from youtube_sentiment.configuration.aws_connection import S3Client
 from youtube_sentiment.logger import logging
@@ -102,30 +102,71 @@ class SimpleStorageService:
         Method Name :   load_model
         Description :   This method loads the model_name model from bucket_name bucket with kwargs
 
-        Output      :   list of objects or object is returned based on filename
+        Output      :   Keras model object
         On Failure  :   Write an exception log and then raise an exception
 
-        Version     :   1.2
-        Revisions   :   moved setup to cloud
+        Version     :   1.3
+        Revisions   :   Updated to support Keras 3 file formats
+        """
+        
+        """
+         the usage of tempfile.NamedTemporaryFile:
+
+        tempfile.NamedTemporaryFile(delete=False, suffix='.keras'):
+
+        This creates a temporary file with a unique name.
+        delete=False: This means the file won't be automatically deleted when closed. We need this because we're going to use the file after the with block ends.
+        suffix='.keras': This adds the '.keras' extension to the temporary file, which can be helpful for some operations that rely on file extensions.
+
+
+        temp_file.write(file_object.get()['Body'].read()):
+
+        This writes the content of the S3 object to the temporary file.
+
+
+        temp_file_path = temp_file.name:
+
+        This gets the path of the temporary file, which we'll use to load the model.
+
+
+        model = keras.models.load_model(temp_file_path):
+
+        This loads the Keras model from the temporary file.
+
+
+        os.unlink(temp_file_path):
+
+        This deletes the temporary file after we've loaded the model.
+
+
+
+        Using a temporary file like this has several advantages:
+
+        It allows us to work with file-based APIs (like keras.models.load_model) that expect a file path, even when our data is coming from a non-file source like S3.
+        It's secure, as the temporary file is created with permissions that only allow the current user to read it.
+        It ensures we don't leave unnecessary files on the disk, as we delete it immediately after use.
         """
         logging.info("Entered the load_model method of S3Operations class")
 
         try:
-            func = (
-                lambda: model_name
-                if model_dir is None
-                else model_dir + "/" + model_name
-            )
-            model_file = func()
+            model_file = model_name if model_dir is None else f"{model_dir}/{model_name}"
             file_object = self.get_file_object(model_file, bucket_name)
-            model_obj = self.read_object(file_object, decode=False)
-            model = load_keras_model(model_obj)
+            
+            if file_object is None:
+                raise FileNotFoundError(f"Model file {model_file} not found in bucket {bucket_name}")
+
+            with tempfile.NamedTemporaryFile(delete=False, suffix='.keras') as temp_file:
+                temp_file.write(file_object.get()['Body'].read())
+                temp_file_path = temp_file.name
+
+            model = load_keras_model(temp_file_path)
+            os.unlink(temp_file_path)  # Remove the temporary file
+
             logging.info("Exited the load_model method of S3Operations class")
             return model
 
         except Exception as e:
             raise YoutubeException(e, sys)
-
     def create_folder(self, folder_name: str, bucket_name: str) -> None:
         """
         Method Name :   create_folder

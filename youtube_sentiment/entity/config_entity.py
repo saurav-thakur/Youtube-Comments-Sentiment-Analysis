@@ -60,4 +60,7 @@ class ModelPusherConfig:
     bucket_name: str = MODEL_BUCKET_NAME
     s3_model_key_path: str = MODEL_TRAINER_TRAINED_MODEL_NAME
 
-
+@dataclass
+class YoutubeSentimentPredictorConfig:
+    model_file_path: str = MODEL_TRAINER_TRAINED_MODEL_NAME
+    model_bucket_name: str = MODEL_BUCKET_NAME
