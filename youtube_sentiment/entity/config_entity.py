@@ -64,3 +64,8 @@ class ModelPusherConfig:
 class YoutubeSentimentPredictorConfig:
     model_file_path: str = MODEL_TRAINER_TRAINED_MODEL_NAME
     model_bucket_name: str = MODEL_BUCKET_NAME
+
+@dataclass
+class ModelPredictionConfig:
+    model_prediction_tokenizer: str = os.path.join(training_pipline_config.artifact_dir,DATA_TRANSFORMATION_DIR_NAME,DATA_TRANSFORMATION_PREPROCESSED_OBJECT_DATA_DIR,MODEL_PREDICTION_TOKENIZER_OBJECT)
+    model_prediction_final_model: str = os.path.join(training_pipline_config.artifact_dir,MODEL_TRAINER_DIR_NAME,MODEL_TRAINER_TRAINED_MODEL_DIR,MODEL_PREDICTION_FINAL_MODEL)

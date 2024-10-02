@@ -50,7 +50,7 @@ MODEL_TRAINER_TRAINED_MODEL_DIR: str = "trained_model"
 MODEL_TRAINER_TRAINED_MODEL_NAME: str = "model.keras"
 MODEL_TRAINER_TRAINED_EXPECTED_SCORE: float = 0.7
 MODEL_TRAINER_CONFIG_FILE_PATH: str = "model.yaml"
-MODEL_TRAINER_TRAINING_EPOCHS: int = 1
+MODEL_TRAINER_TRAINING_EPOCHS: int = 5
 MODEL_TRAINER_TRAINING_BATCH_SIZE: int = 64
 
 # model evaluation constants
@@ -59,3 +59,6 @@ MODEL_BUCKET_NAME: str = "sentiment-model-youtube-analytics"
 MODEL_PUSHER_S3_KEY: str = "model-registry"
 REGION_NAME = "eu-north-1"
 
+# model prediction constants
+MODEL_PREDICTION_FINAL_MODEL: str = "model.keras"
+MODEL_PREDICTION_TOKENIZER_OBJECT: str = "tokenizer.pkl"
