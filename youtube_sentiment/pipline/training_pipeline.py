@@ -128,9 +128,9 @@ class TrainingPipeline:
             logging.info("LOGGING MODEL EVAL ARTIFACT")
             logging.info(model_evaluation_artifact)
 
-            logging.info("Model Pusher Started")
-            model_pusher_artifact = self.start_model_pusher(model_evaluation_artifact=model_evaluation_artifact)
-            logging.info("Model Pusher Completed")
+            # logging.info("Model Pusher Started")
+            # model_pusher_artifact = self.start_model_pusher(model_evaluation_artifact=model_evaluation_artifact)
+            # logging.info("Model Pusher Completed")
 
 
         except Exception as e:

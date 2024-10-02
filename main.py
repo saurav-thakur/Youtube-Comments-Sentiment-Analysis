@@ -22,20 +22,3 @@ if __name__ == "__main__":
     training = TrainingPipeline()
     training.run_pipeline()
 
-    # config = ModelTrainerConfig()
-    # data = DataTransformationConfig()
-    # model = load_keras_model(config.model_trainer_trained_model_name)
-    
-    # X_test = np.load(data.data_transformation_transformed_test_data)
-    # y_test = np.load(data.data_transformation_transformed_train_label)
-
-    # X_train = np.load(data.data_transformation_transformed_train_data)
-    # y_train = np.load(data.data_transformation_transformed_train_label)
-    
-    # X_test = np.load(data.data_transformation_transformed_test_data)
-    # y_test = np.load(data.data_transformation_transformed_test_label)
-
-
-    # print(y_test)
-
-
