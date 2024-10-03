@@ -14,4 +14,5 @@ fastapi
 uvicorn
 google-api-python-client-stubs
 httpx
+PyYAML
 -e .
