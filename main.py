@@ -13,12 +13,12 @@ from youtube_sentiment.entity.config_entity import ModelTrainerConfig,DataTransf
 if __name__ == "__main__":
     # pushing data to mongodb
 
-    # logging.info("pushing the data to mongo db")
-    # data_path = "./dataset/final_dataset/sentiment_analysis_dataset.csv"
-    # push_data_config(data_path=data_path)
-    # logging.info("pushing the data to mongo db")
+    logging.info("pushing the data to mongo db")
+    data_path = "./dataset/final_dataset/sentiment_analysis_dataset.csv"
+    push_data_config(data_path=data_path)
+    logging.info("pushing the data to mongo db")
 
     # training pipeline
-    training = TrainingPipeline()
-    training.run_pipeline()
+    # training = TrainingPipeline()
+    # training.run_pipeline()
 

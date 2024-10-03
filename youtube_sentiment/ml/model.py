@@ -11,7 +11,9 @@ def train_model(vocab_size):
     try:
         model = Sequential()
         model.add(Embedding(input_dim=vocab_size, output_dim=10, input_length=DATA_TRANSFORMATION_PAD_SEQUENCES_MAX_LEN))
-        model.add(Bidirectional(LSTM(units=10,return_sequences=False)))
+        model.add(Bidirectional(LSTM(units=56,return_sequences=True)))
+        model.add(Bidirectional(LSTM(units=28,return_sequences=True)))
+        model.add(Bidirectional(LSTM(units=8,return_sequences=False)))
         model.add(Dense(units=2, activation='softmax'))
         model.compile(loss='sparse_categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
         model.build(input_shape=(None, DATA_TRANSFORMATION_PAD_SEQUENCES_MAX_LEN))

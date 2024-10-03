@@ -12,4 +12,5 @@ boto3
 mypy-boto3-s3
 fastapi
 uvicorn
-# -e .
+google-api-python-client-stubs
+-e .

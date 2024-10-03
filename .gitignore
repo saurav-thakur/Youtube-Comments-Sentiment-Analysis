@@ -8,6 +8,7 @@ venv-youtube-sentiment
 *.csv
 *.pkl
 *.npy
+*.keras
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
