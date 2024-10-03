@@ -13,4 +13,6 @@ mypy-boto3-s3
 fastapi
 uvicorn
 google-api-python-client-stubs
+httpx
+PyYAML
 -e .
