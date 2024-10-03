@@ -10,7 +10,11 @@ load_dotenv()
 class DatabaseConfig:
     def __init__(self,dataset):
         self.dataset = dataset
-        self.client = pymongo.MongoClient(os.getenv("MONGO_DB_CONNECTION_URL"))
+
+        # we have to get the environment variable in a different variable and pass it in MongoClient otherwise it would throw an error
+
+        mongo_uri = os.getenv("MONGO_DB_CONNECTION_URL")
+        self.client = pymongo.MongoClient(mongo_uri)
         self.database = self.client[DB_NAME]
         self.collection = self.database[COLLECTION_NAME]
 

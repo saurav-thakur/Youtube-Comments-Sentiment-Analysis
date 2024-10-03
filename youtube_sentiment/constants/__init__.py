@@ -1,8 +1,10 @@
+import os
 
 
 # database
 DB_NAME = "YOUTUBE_DATASET"
 COLLECTION_NAME = "sentiment_data"
+SENTIMENT_ANALYSIS_DATASET = os.path.join("dataset","final_dataset","sentiment_analysis_dataset.csv")
 
 PIPELINE_NAME = "youtube_sentiment"
 ARTIFACT_DIR = "artifacts"
@@ -50,7 +52,7 @@ MODEL_TRAINER_TRAINED_MODEL_DIR: str = "trained_model"
 MODEL_TRAINER_TRAINED_MODEL_NAME: str = "model.keras"
 MODEL_TRAINER_TRAINED_EXPECTED_SCORE: float = 0.7
 MODEL_TRAINER_CONFIG_FILE_PATH: str = "model.yaml"
-MODEL_TRAINER_TRAINING_EPOCHS: int = 5
+MODEL_TRAINER_TRAINING_EPOCHS: int = 3
 MODEL_TRAINER_TRAINING_BATCH_SIZE: int = 64
 
 # model evaluation constants

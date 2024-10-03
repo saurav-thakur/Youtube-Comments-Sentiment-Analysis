@@ -2,12 +2,16 @@ import pandas as pd
 from youtube_sentiment.pipline.training_pipeline import TrainingPipeline
 from youtube_sentiment.pipline.prediction_pipeline import PredictionPipeline
 from youtube_sentiment.data_access.database_configuration import push_data_config
+from youtube_sentiment.data_access.extracting_data_from_youtube import fetch_comments
+from youtube_sentiment.constants import SENTIMENT_ANALYSIS_DATASET,DATA_TRANSFORMATION_NEGATIVE_SENTIMENT_MAP,DATA_TRANSFORMATION_POSITIVE_SENTIMENT_MAP
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response, JSONResponse
 import pandas as pd
+from urllib.parse import urlparse
+from collections import Counter
 
 app = FastAPI()
 
@@ -32,21 +36,52 @@ async def training():
     
 
 @app.get("/api/v1/predict")
-async def predict(text: str):
+async def predict(youtube_url: str):
     try:
-        # Create a DataFrame with the input text
-        df = pd.DataFrame({'text': [text]})
-        print("DataFrame created:", df)
+        # Validate URL using urllib.parse
+        parsed_url = urlparse(youtube_url)
+        
+        # Check if scheme and netloc are present (basic URL validation)
+        if not all([parsed_url.scheme, parsed_url.netloc]):
+            # raise HTTPException(status_code=400, detail="Invalid URL")
+            
+            return JSONResponse(status_code=400, content={
+                "error": "Invalid URL"
+            })
 
-        # Run prediction
+        
+        if "/shorts/" in youtube_url:  # For YouTube Shorts
+            video_id = youtube_url.split("/shorts/")[1]  # Split on '/shorts/' and take the remaining part
+        elif "watch?v=" in youtube_url:  # For standard YouTube videos
+            video_id =  youtube_url.split("=")[1]  # Split on 'v=' and take the first part before any '&'
+        else:
+            return JSONResponse(status_code=500, content={
+            "comments": "no comments in the video"
+        })
+
+        df = fetch_comments(videoId=video_id)
+
+        print("fetched data:", df)
+
+
         prediction_pipeline = PredictionPipeline()
-        predicted_class = prediction_pipeline.predict(df)
-        print("Predicted class:", predicted_class)
+        prediction,predicted_class = prediction_pipeline.predict(df)
+        # df.to_csv("test_data_youtube.csv",index=False)
+        print("Predicted class:", prediction.numpy())
+        prediction_np = prediction.numpy()
+        prediction_list = prediction_np.tolist()  # Convert to Python list
+
+        # Now use the list with Counter
+        counter = Counter(prediction_list)
+
+        # Define the mapping for class labels
+        label_map = {DATA_TRANSFORMATION_NEGATIVE_SENTIMENT_MAP: "Negative", DATA_TRANSFORMATION_POSITIVE_SENTIMENT_MAP: "Positive"}
+
+        # Apply the mapping to the counter using a dictionary comprehension
+        mapped_counter = {label_map[k]: v for k, v in counter.items()}
 
         # Return the prediction in JSON format
-        return JSONResponse(content={
-            "prediction": "negative" if predicted_class == 0 else "positive",
-        })
+        return mapped_counter
 
     except Exception as e:
         # Handle any exceptions and return an error message
@@ -58,9 +93,11 @@ async def predict(text: str):
 async def push_data_to_mongo():
     try:
         # pushing data to mongodb
-
-        data_path = "./dataset/final_dataset/sentiment_analysis_dataset.csv"
+        data_path = SENTIMENT_ANALYSIS_DATASET
         push_data_config(data_path=data_path)
+        return JSONResponse(content={
+            "message":"data sucessfully pushed to mongodb"
+        })
     except Exception as e:
             return JSONResponse(status_code=500, content={
             "error": str(e)
