@@ -1,6 +1,6 @@
 import os
 import pytest
-from fastapi.testclient import TestClient
+from starlette.testclient import TestClient
 from app import app
 
 from youtube_sentiment.entity.config_entity import DataValidationConfig
