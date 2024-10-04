@@ -18,9 +18,9 @@ jobs:
   build-and-push-ecr-image:
     name: Continuous-Integration
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./
+    # defaults:
+    #   run:
+    #     working-directory: ./
 
     strategy:
       matrix:
