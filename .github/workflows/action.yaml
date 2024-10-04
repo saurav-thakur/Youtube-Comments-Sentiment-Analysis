@@ -18,9 +18,9 @@ jobs:
   build-and-push-ecr-image:
     name: Continuous-Integration
     runs-on: ubuntu-latest
-    # defaults:
-    #   run:
-    #     working-directory: ./
+    defaults:
+      run:
+        working-directory: ./
 
     strategy:
       matrix:
@@ -56,6 +56,13 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Debug ECR Info
+        run: |
+          echo "AWS Region: ${{ secrets.AWS_REGION }}"
+          echo "ECR Repository: ${{ secrets.ECR_REPO }}"
+          echo "ECR Registry: ${{ steps.login-ecr.outputs.registry }}"
+          aws ecr describe-repositories --repository-names ${{ secrets.ECR_REPO }} || echo "Repository does not exist"
 
       - name: Build, tag and push image to Amazon ECR
         id: build-image
