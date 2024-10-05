@@ -64,3 +64,7 @@ REGION_NAME = "eu-north-1"
 # model prediction constants
 MODEL_PREDICTION_FINAL_MODEL: str = "model.keras"
 MODEL_PREDICTION_TOKENIZER_OBJECT: str = "tokenizer.pkl"
+
+# FAST API PORT and HOST
+PORT: int = 8080
+HOST: str = "0.0.0.0"
