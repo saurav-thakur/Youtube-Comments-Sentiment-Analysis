@@ -3,7 +3,7 @@ from youtube_sentiment.pipline.training_pipeline import TrainingPipeline
 from youtube_sentiment.pipline.prediction_pipeline import PredictionPipeline
 from youtube_sentiment.data_access.database_configuration import push_data_config
 from youtube_sentiment.data_access.extracting_data_from_youtube import fetch_comments
-from youtube_sentiment.constants import SENTIMENT_ANALYSIS_DATASET,DATA_TRANSFORMATION_NEGATIVE_SENTIMENT_MAP,DATA_TRANSFORMATION_POSITIVE_SENTIMENT_MAP
+from youtube_sentiment.constants import SENTIMENT_ANALYSIS_DATASET,DATA_TRANSFORMATION_NEGATIVE_SENTIMENT_MAP,DATA_TRANSFORMATION_POSITIVE_SENTIMENT_MAP,PORT,HOST
 
 from fastapi import FastAPI, HTTPException
 import uvicorn
@@ -105,4 +105,4 @@ async def push_data_to_mongo():
 
 
 if __name__ == "__main__":
-    uvicorn.run("app:app",host="localhost",port=8080,reload=True)
+    uvicorn.run("app:app",host=HOST,port=PORT)
