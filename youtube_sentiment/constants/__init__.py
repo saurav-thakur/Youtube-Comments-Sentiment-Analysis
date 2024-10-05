@@ -67,4 +67,4 @@ MODEL_PREDICTION_TOKENIZER_OBJECT: str = "tokenizer.pkl"
 
 # FAST API PORT and HOST
 PORT: int = 8080
-HOST: str = "localhost"
+HOST: str = "0.0.0.0"
