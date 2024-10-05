@@ -95,38 +95,21 @@ class TrainingPipeline:
     def run_pipeline(self)->None:
         try:
             logging.info("Data Ingestion Started")
-            # data_ingestion_artifact = self.start_data_ingestion()
-            data_ingestion_artifact = DataIngestionArtifact(
-                train_file_path=self.data_ingestion_config.training_file_path,
-                test_file_path=self.data_ingestion_config.testing_file_path
-            )
+            data_ingestion_artifact = self.start_data_ingestion()
+            # data_ingestion_artifact = DataIngestionArtifact(
+            #     train_file_path=self.data_ingestion_config.training_file_path,
+            #     test_file_path=self.data_ingestion_config.testing_file_path
+            # )
             logging.info("Data Ingestion Completed")
 
             logging.info("Data Validation Started")
             data_validation_artifact = self.start_data_validation(data_ingestion_artifact)
             
-            data_validation_artifact = DataValidationArtifact(
-                validation_status=True,
-                message="NOT IMPLEMENTED"
-            )
+            # data_validation_artifact = DataValidationArtifact(
+            #     validation_status=True,
+            #     message="NOT IMPLEMENTED"
+            # )
             logging.info("Data Validation Completed")
-            logging.info("Data Ingestion Started")
-            # data_ingestion_artifact = self.start_data_ingestion()
-            data_ingestion_artifact = DataIngestionArtifact(
-                train_file_path=self.data_ingestion_config.training_file_path,
-                test_file_path=self.data_ingestion_config.testing_file_path
-            )
-            logging.info("Data Ingestion Completed")
-
-            logging.info("Data Validation Started")
-            # data_validation_artifact = self.start_data_validation(data_ingestion_artifact)
-            
-            data_validation_artifact = DataValidationArtifact(
-                validation_status=True,
-                message="NOT IMPLEMENTED"
-            )
-            logging.info("Data Validation Completed")
-
 
             logging.info("Data Transformation Started")
             data_transformation_artifact = self.start_data_transformation(data_ingestion_artifact=data_ingestion_artifact,
