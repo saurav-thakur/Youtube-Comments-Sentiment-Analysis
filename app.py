@@ -105,4 +105,4 @@ async def push_data_to_mongo():
 
 
 if __name__ == "__main__":
-    uvicorn.run("app:app",host=HOST,port=PORT)
+    uvicorn.run("app:app",host="0.0.0.0",port=PORT)
