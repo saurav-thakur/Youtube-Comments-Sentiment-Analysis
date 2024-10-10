@@ -11,7 +11,7 @@ This repository contains the code and resources for performing sentiment analysi
 - [Usage](#usage)
 - [Model Training](#model-training)
 - [Evaluation](#evaluation)
-- [Results](#results) -->
+- [Results](#results)
 - [License](#license)
 
 ## Introduction
@@ -283,6 +283,21 @@ To run the fast api server. Run the following command.
 ```
 python app.py
 ```
+
+Note: Since we are ingesting data from the MongoDB. We will have to create a .env file in the root directory and add mongodb url. And since we are using youtube video to extract comments. We will need Youtube Developer Key as well.
+
+Inside .env
+
+```
+MONGO_DB_CONNECTION_URL = "MongoDbURI"
+YOUTUBE_DEVELOPER_KEY = "YoutubeDevKey"
+```
+
+## Plots
+
+Accuracy Plot:
+![Accuracy vs Validation Accuracy](artifacts/training_artifacts/plots/accuracy.png)
+![Loss vs Validation Loss](artifacts/training_artifacts/plots/validation.png)
 
 ## License
 

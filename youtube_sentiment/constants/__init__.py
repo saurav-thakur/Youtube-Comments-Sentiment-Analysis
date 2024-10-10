@@ -4,7 +4,9 @@ import os
 # database
 DB_NAME = "YOUTUBE_DATASET"
 COLLECTION_NAME = "sentiment_data"
-SENTIMENT_ANALYSIS_DATASET = os.path.join("dataset","final_dataset","sentiment_analysis_dataset.csv")
+SENTIMENT_ANALYSIS_DATASET = os.path.join(
+    "dataset", "final_dataset", "sentiment_analysis_dataset.csv"
+)
 
 PIPELINE_NAME = "youtube_sentiment"
 ARTIFACT_DIR = "artifacts"
@@ -48,15 +50,18 @@ DATA_TRANSFORMATION_NEGATIVE_SENTIMENT_MAP: int = 0
 
 # model constants
 MODEL_TRAINER_DIR_NAME: str = "model_trainer"
+MODEL_TRAINER_PLOTS_DIR_NAME: str = "plots"
 MODEL_TRAINER_TRAINED_MODEL_DIR: str = "trained_model"
 MODEL_TRAINER_TRAINED_MODEL_NAME: str = "model.keras"
 MODEL_TRAINER_TRAINED_EXPECTED_SCORE: float = 0.7
 MODEL_TRAINER_CONFIG_FILE_PATH: str = "model.yaml"
 MODEL_TRAINER_TRAINING_EPOCHS: int = 3
 MODEL_TRAINER_TRAINING_BATCH_SIZE: int = 64
+MODEL_TRAINER_ACCURACY_PLOT: str = "accuracy.png"
+MODEL_TRAINER_VALIDATION_PLOT: str = "validation.png"
 
 # model evaluation constants
-MODEL_EVALUATION_THRESHOLD_SCORE: float = 0.7 
+MODEL_EVALUATION_THRESHOLD_SCORE: float = 0.7
 MODEL_BUCKET_NAME: str = "sentiment-model-youtube-analytics"
 MODEL_PUSHER_S3_KEY: str = "model-registry"
 REGION_NAME = "eu-north-1"
@@ -67,4 +72,4 @@ MODEL_PREDICTION_TOKENIZER_OBJECT: str = "tokenizer.pkl"
 
 # FAST API PORT and HOST
 PORT: int = 8080
-HOST: str = "0.0.0.0"
+HOST: str = "127.0.0.1"
