@@ -5,15 +5,14 @@ This repository contains the code and resources for performing sentiment analysi
 ## Table of Contents
 
 - [Introduction](#introduction)
+- [Dataset](#dataset)
 - [Project Structure](#project-folder-structure)
-<!-- - [Dataset](#dataset) -->
 - [Installation](#installation)
-<!-- - [Usage](#usage)
+- [Usage](#usage)
 - [Model Training](#model-training)
 - [Evaluation](#evaluation)
 - [Results](#results) -->
 - [License](#license)
-
 
 ## Introduction
 
@@ -21,6 +20,15 @@ Sentiment analysis is a common task in natural language processing (NLP) that in
 
 The project uses machine learning techniques to classify comments into three sentiment categories: positive, negative, and neutral.
 
+## Dataset
+
+The dataset used for training is basically mixture of different sentiment dataset.
+
+1. [IMDB dataset (Sentiment analysis) in CSV format](https://www.kaggle.com/datasets/columbine/imdb-dataset-sentiment-analysis-in-csv-format)
+1. [Sentiment Analysis Dataset](https://www.kaggle.com/datasets/abhi8923shriv/sentiment-analysis-dataset)
+1. [Sentiment Analysis Evaluation Dataset](https://www.kaggle.com/datasets/prishasawhney/sentiment-analysis-evaluation-dataset)
+
+To make sure the dataset consists of various sources, this project combines data from various sources. The data is preprocessed to remove noise and irrelevant information. Each comment is labeled with its corresponding sentiment (positive and negative). The neutral class is removed for now and will be incorporated in the future.
 
 ## Project Folder Structure
 
@@ -29,122 +37,194 @@ This structure is organized to facilitate clean and modular code, making it easi
 #### Folder Structure Overview
 
 ```
-youtube_sentiment/
-│
-├── youtube_sentiment/
-│   ├── __init__.py
-│   ├── components/
-│   │   ├── __init__.py
-│   │   ├── data_ingestion.py
-│   │   ├── data_validation.py
-│   │   ├── data_transformation.py
-│   │   ├── model_trainer.py
-│   │   ├── model_evaluation.py
-│   │   └── model_pusher.py
-│   │
-│   ├── configuration/
-│   │   └── __init__.py
-│   │
-│   ├── constants/
-│   │   └── __init__.py
-│   │
-│   ├── entity/
-│   │   ├── __init__.py
-│   │   ├── config_entity.py
-│   │   └── artifact_entity.py
-│   │
-│   ├── exception/
-│   │   └── __init__.py
-│   │
-│   ├── logger/
-│   │   └── __init__.py
-│   │
-│   ├── pipeline/
-│   │   ├── __init__.py
-│   │   ├── training_pipeline.py
-│   │   └── prediction_pipeline.py
-│   │
-│   └── utils/
-│       ├── __init__.py
-│       └── utilities.py
-│
-├── tests/
-│   ├── __init__.py
-│   └── test_app.py
+├── .dockerignore
+├── .gitignore
+├── app.py
+├── Dockerfile
+├── LICENSE
+├── main.py
+├── README.md
+├── requirements.txt
+├── setup.py
+├── .github/
+│   └── workflows/
+│       └── action.yaml
+├── artifacts/
 │
 ├── config/
 │   ├── model.yaml
 │   └── schema.yaml
-│
-├── app.py
-├── main.py
-├── Dockerfile
-└── .dockerignore
+├── dataset/
+│   └── final_dataset/
+│       └── sentiment_analysis_dataset.csv
+├── notebooks/
+│   ├── 01_experiment.ipynb
+│   ├── 02_exploring_data.ipynb
+│   ├── 03_model_building_ml.ipynb
+│   └── helper.py
+├── tests/
+│   ├── test_app.py
+│   └── __init__.py
+└── youtube_sentiment/
+    ├── __init__.py
+    ├── cloud_storage/
+    │   ├── aws_storage.py
+    │   └── __init__.py
+    ├── components/
+    │   ├── data_ingestion.py
+    │   ├── data_transformation.py
+    │   ├── data_validation.py
+    │   ├── model_evaluation.py
+    │   ├── model_pusher.py
+    │   ├── model_trainer.py
+    │   └── __init__.py
+    ├── configuration/
+    │   ├── aws_connection.py
+    │   ├── mongo_db_connection.py
+    │   └── __init__.py
+    ├── constants/
+    │   └── __init__.py
+    ├── data_access/
+    │   ├── database_configuration.py
+    │   ├── exporting_data_configuration.py
+    │   ├── extracting_data_from_youtube.py
+    │   └── __init__.py
+    ├── entity/
+    │   ├── artifact_entity.py
+    │   ├── config_entity.py
+    │   ├── s3_estimator.py
+    │   └── __init__.py
+    ├── exception/
+    │   └── __init__.py
+    ├── logger/
+    │   └── __init__.py
+    ├── ml/
+    │   ├── model.py
+    │   └── __init__.py
+    ├── pipline/
+    │   ├── prediction_pipeline.py
+    │   ├── training_pipeline.py
+    │   └── __init__.py
+    └── utils/
+        ├── utilities.py
+        └── __init__.py
+
 ```
 
 ## Project Directory and Files Description
 
 ### 1. `youtube_sentiment/`
-   - **`__init__.py`**: Initializes the `youtube_sentiment` package.
 
-### 2. `youtube_sentiment/components/`
-   - **`__init__.py`**: Initializes the `components` module.
-   - **`data_ingestion.py`**: Contains functions and classes for ingesting raw data from various sources.
-   - **`data_validation.py`**: Handles validation of the data to ensure it meets the required standards before processing.
-   - **`data_transformation.py`**: Contains code for transforming raw data into a format suitable for model training.
-   - **`model_trainer.py`**: Responsible for training machine learning models using the processed data.
-   - **`model_evaluation.py`**: Includes methods to evaluate the performance of the trained models.
-   - **`model_pusher.py`**: Manages the deployment or saving of the trained model to a production environment.
+- **`__init__.py`**: Initializes the `youtube_sentiment` package.
+  Here’s a detailed breakdown of the files and their functions, similar to the format you requested:
 
-### 3. `youtube_sentiment/configuration/`
-   - **`__init__.py`**: Initializes the `configuration` module, which handles configuration management.
+### 1. **Project Root Files**
 
-### 4. `youtube_sentiment/constants/`
-   - **`__init__.py`**: Initializes the `constants` module, which contains project-wide constants.
+- **`.dockerignore`**: Lists files and directories to exclude from the Docker image build process.
+- **`.gitignore`**: Specifies files and directories to be ignored by Git for version control.
+- **`app.py`**: The main application entry point, likely running the FastAPI application.
+- **`Dockerfile`**: Instructions to build a Docker image for the application, specifying dependencies and build steps.
+- **`LICENSE`**: Contains the legal license under which the project is distributed.
+- **`main.py`**: Likely used as an auxiliary script for specific tasks or running services.
+- **`README.md`**: A markdown file providing an overview of the project, including instructions for setup, usage, and contribution.
+- **`requirements.txt`**: Lists all Python dependencies required to run the project.
+- **`setup.py`**: A Python script used to package the project, making it installable as a Python package.
 
-### 5. `youtube_sentiment/entity/`
-   - **`__init__.py`**: Initializes the `entity` module.
-   - **`config_entity.py`**: Defines configuration entities that manage configuration settings.
-   - **`artifact_entity.py`**: Contains artifact entities that represent outputs at different stages of the pipeline.
+### 2. **`.github/workflows/`**
 
-### 6. `youtube_sentiment/exception/`
-   - **`__init__.py`**: Initializes the `exception` module for custom exception handling.
+- **`action.yaml`**: Defines GitHub Actions for automating tasks such as testing, building, or deployment.
 
-### 7. `youtube_sentiment/logger/`
-   - **`__init__.py`**: Initializes the `logger` module for logging events, errors, and other significant occurrences.
+### 3. **`artifacts/training_artifacts/`**
 
-### 8. `youtube_sentiment/pipeline/`
-   - **`__init__.py`**: Initializes the `pipeline` module.
-   - **`training_pipeline.py`**: Manages the end-to-end training pipeline, coordinating data ingestion, transformation, model training, and evaluation.
-   - **`prediction_pipeline.py`**: Manages the prediction pipeline, which uses the trained model to make predictions on new data.
+Stores the results of the data validation process, including information about data consistency and integrity.
 
-### 9. `youtube_sentiment/utils/`
-   - **`__init__.py`**: Initializes the `utils` module.
-   - **`utilities.py`**: Contains utility functions that support various components across the project.
+### 4. **`config/`**
 
-### 10. `tests/`
-   - **`__init__.py`**: Initializes the `tests` module.
-   - **`test_app.py`**: Contains unit tests to validate the functionality of the application.
+- **`model.yaml`**: Configuration file that specifies parameters and settings for the machine learning model.
+- **`schema.yaml`**: Defines the structure and data types expected in the dataset, ensuring data validation.
 
-### 11. `config/`
-   - **`model.yaml`**: Configuration file specifying model parameters and settings.
-   - **`schema.yaml`**: Schema definition for the dataset, detailing expected data types and structure.
+### 5. **`dataset/final_dataset/`**
 
-### 12. Project Root Files
-   - **`app.py`**: The main entry point for running the application.
-   - **`main.py`**: An auxiliary script, potentially for testing or initiating processes.
-   - **`Dockerfile`**: Contains instructions to create a Docker image for the application.
-   - **`.dockerignore`**: Specifies files and directories to ignore when creating a Docker image.
+- **`sentiment_analysis_dataset.csv`**: The final dataset used for training and evaluating the sentiment analysis model, likely containing text data and labels.
 
----
+### 6. **`notebooks/`**
+
+- **`01_experiment.ipynb`**: Jupyter notebook for initial experimentation and exploratory analysis.
+- **`02_exploring_data.ipynb`**: Notebook focused on exploring and visualizing the dataset.
+- **`03_model_building_ml.ipynb`**: Notebook for building and training the machine learning model.
+- **`helper.py`**: A helper script containing utility functions used across the notebooks.
+
+### 7. **`tests/`**
+
+- **`__init__.py`**: Initializes the `tests` module.
+- **`test_app.py`**: Contains unit tests to validate the core functionality of the application.
+
+### 8. **`youtube_sentiment/`**
+
+#### 8.1. `cloud_storage/`
+
+- **`aws_storage.py`**: Handles operations related to uploading and retrieving data from AWS S3.
+- **`__init__.py`**: Initializes the `cloud_storage` module.
+
+#### 8.2. `components/`
+
+- **`__init__.py`**: Initializes the `components` module.
+- **`data_ingestion.py`**: Responsible for ingesting raw data, possibly from sources like YouTube or APIs.
+- **`data_validation.py`**: Validates the ingested data, checking for errors, missing values, or inconsistencies.
+- **`data_transformation.py`**: Transforms the raw data into a structured format ready for machine learning.
+- **`model_trainer.py`**: Contains code to train the machine learning model using the preprocessed data.
+- **`model_evaluation.py`**: Evaluates the model’s performance using metrics like accuracy, precision, recall, etc.
+- **`model_pusher.py`**: Handles the deployment of the trained model to production environments.
+
+#### 8.3. `configuration/`
+
+- **`aws_connection.py`**: Manages connections to AWS S3 services.
+- **`mongo_db_connection.py`**: Manages the connection to a MongoDB database.
+- **`__init__.py`**: Initializes the `configuration` module.
+
+#### 8.4. `constants/`
+
+- **`__init__.py`**: Initializes the `constants` module, which contains project-wide constants.
+
+#### 8.5. `data_access/`
+
+- **`database_configuration.py`**: Manages configurations related to database connections.
+- **`exporting_data_configuration.py`**: Handles configurations for exporting data.
+- **`extracting_data_from_youtube.py`**: Extracts data from YouTube, using the YouTube API.
+- **`__init__.py`**: Initializes the `data_access` module.
+
+#### 8.6. `entity/`
+
+- **`artifact_entity.py`**: Defines entities representing artifacts generated during different stages of the ML pipeline.
+- **`config_entity.py`**: Defines configuration entities for managing various configuration settings.
+- **`s3_estimator.py`**: Contains logic for loading,saving and predicting operations related to AWS S3.
+- **`__init__.py`**: Initializes the `entity` module.
+
+#### 8.7. `exception/`
+
+- **`__init__.py`**: Initializes the `exception` module for custom exception handling.
+
+#### 8.8. `logger/`
+
+- **`__init__.py`**: Initializes the `logger` module, which provides logging capabilities for tracking events and errors.
+
+#### 8.9. `ml/`
+
+- **`model.py`**: Contains the machine learning model architecture and related functionality.
+- **`__init__.py`**: Initializes the `ml` module.
+
+#### 8.10. `pipline/`
+
+- **`prediction_pipeline.py`**: Manages the process of making predictions with the trained model.
+- **`training_pipeline.py`**: Manages the end-to-end process of training the machine learning model, from data ingestion to evaluation.
+- **`__init__.py`**: Initializes the `pipline` module.
+
+#### 8.11. `utils/`
+
+- **`utilities.py`**: Contains utility functions that are used across the project for common operations like file handling or logging.
+- **`__init__.py`**: Initializes the `utils` module.
 
 This folder structure ensures that the project is well-organized, modular, and scalable, making it easier to maintain and extend in the future.
-
-## Dataset
-
-The dataset used for this project is collected from YouTube comments. The data is preprocessed to remove noise and irrelevant information. Each comment is labeled with its corresponding sentiment (positive, negative, or neutral).
-
-**Note:** Due to privacy concerns and YouTube's data policy, the dataset is not included in this repository. However, you can collect your own dataset using YouTube's Data API or other scraping tools.
 
 ## Installation
 
@@ -154,93 +234,55 @@ To run the project locally, you need to have Python installed. Follow the steps 
 
    ```bash
    git clone https://github.com/yourusername/youtube-comments-sentiment-analysis.git
+   ```
+
+   ```bash
    cd youtube-comments-sentiment-analysis
    ```
 
 2. **Create a virtual environment:**
 
    ```bash
-   conda create --prefix venv python=3.10.0
+   conda create --prefix .venv python=3.11.2 -y
    ```
 
-3. **If you want to add any extra packages:**
+3. **Activate your environment**
+
+   ```bash
+   conda activate .venv
+   ```
+
+4. **If you want to add any extra packages:**
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+5. **If you want to add any extra packages:**
 
    ```bash
    pip install yourPackageName
    ```
 
-
-3. **To remove any packages:**
+6. **To remove any packages:**
 
    ```bash
    pip uninstall yourPackageName
    ```
 
-
-4. **To deactivate the poetry environment:**
+7. **To deactivate the conda environment:**
 
    ```bash
-   source deactivate
+   conda deactivate
    ```
 
-<!-- ## Usage
+## Usage
 
-Once the environment is set up, you can use the following scripts and notebooks to perform various tasks:
+To run the fast api server. Run the following command.
 
-- **Data Preprocessing:**  
-  Use the `data_preprocessing.py` script to clean and preprocess the dataset.
-
-  ```bash
-  python scripts/data_preprocessing.py --input data/raw_comments.csv --output data/processed_comments.csv
-  ```
-
-- **Model Training:**  
-  Train the sentiment analysis model using the `train_model.py` script.
-
-  ```bash
-  python scripts/train_model.py --input data/processed_comments.csv --model_output models/sentiment_model.pkl
-  ```
-
-- **Inference:**  
-  Use the trained model to predict the sentiment of new comments.
-
-  ```bash
-  python scripts/predict.py --model models/sentiment_model.pkl --input data/new_comments.csv --output results/predictions.csv
-  ```
-
-## Model Training
-
-The project uses a supervised machine learning approach to train a sentiment analysis model. The training process involves the following steps:
-
-1. **Data Splitting:**  
-   The dataset is split into training and testing sets.
-
-2. **Feature Extraction:**  
-   Text features are extracted using techniques like TF-IDF or word embeddings.
-
-3. **Model Selection:**  
-   Various machine learning models (e.g., Logistic Regression, SVM, Random Forest) are evaluated.
-
-4. **Training:**  
-   The selected model is trained on the training data.
-
-5. **Hyperparameter Tuning:**  
-   Hyperparameters are optimized using techniques like Grid Search or Random Search.
-
-## Evaluation
-
-The model's performance is evaluated using the testing set. Key evaluation metrics include:
-
-- **Accuracy:** The percentage of correct predictions.
-- **Precision:** The number of true positive results divided by the number of positive results predicted by the model.
-- **Recall:** The number of true positive results divided by the number of positives that should have been predicted.
-- **F1 Score:** The harmonic mean of precision and recall.
-
-Evaluation results are saved in the `results/` directory for further analysis.
-
-## Results
-
-The results of the sentiment analysis, including confusion matrices, classification reports, and visualizations, are documented in the `results/` directory. You can review these outputs to understand the model's strengths and weaknesses. -->
+```
+python app.py
+```
 
 ## License
 
