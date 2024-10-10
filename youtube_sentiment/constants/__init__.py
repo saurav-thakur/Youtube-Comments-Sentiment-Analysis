@@ -15,6 +15,9 @@ DATSET_FILE_NAME = "sentiment_dataset.csv"
 TRAIN_FILE_NAME = "train.csv"
 TEST_FILE_NAME = "test.csv"
 TARGET_COLUMN = "label"
+YOUTUBE_DATASET_COLLECTION = os.path.join(
+    "dataset", "collecting_data", "youtube_data.csv"
+)
 
 
 # data ingestion constants

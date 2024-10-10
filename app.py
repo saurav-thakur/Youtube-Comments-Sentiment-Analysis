@@ -11,6 +11,8 @@ from youtube_sentiment.constants import (
     HOST,
 )
 
+from youtube_sentiment.utils.utilities import retain_youtube_csv_files
+
 from fastapi import FastAPI, HTTPException
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
@@ -71,10 +73,10 @@ async def predict(youtube_url: str):
 
         prediction_pipeline = PredictionPipeline()
         prediction, predicted_class = prediction_pipeline.predict(df)
-        # df.to_csv("test_data_youtube.csv",index=False)
         prediction_np = prediction.numpy()
         prediction_list = prediction_np.tolist()  # Convert to Python list
 
+        retain_youtube_csv_files(df)
         # Now use the list with Counter
         counter = Counter(prediction_list)
 
