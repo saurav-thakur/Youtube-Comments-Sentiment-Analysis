@@ -56,22 +56,74 @@ def load_keras_model(model_path):
     return model
 
 
-def retain_youtube_csv_files(df: pd.DataFrame, labels):
+def retain_youtube_csv_files(df: pd.DataFrame, prediction_probab, predictions):
     logging.info("Retaining youtube comments as CSV File")
     try:
-        if os.path.isfile(YOUTUBE_DATASET_COLLECTION):
-            logging.info("Already have a old youtube CSV File")
+        # Remove empty rows from the DataFrame before processing
+        df = df.dropna(subset=["text"])
+        logging.info(f"Number of rows after dropping empty text rows: {df.shape[0]}")
 
+        if os.path.isfile(YOUTUBE_DATASET_COLLECTION):
+            logging.info("Already have an old youtube CSV File")
+
+            # Load old CSV and annotate new labels
             old_df = pd.read_csv(YOUTUBE_DATASET_COLLECTION)
-            final_df = pd.concat([old_df, df], axis="rows")
-            final_df.drop_duplicates("text", keep="first", ignore_index=True)
+            old_df = old_df.dropna(subset=["text"])  # Ensure old file has no empty rows
+            logging.info(f"Number of rows in old CSV: {old_df.shape[0]}")
+
+            labelled_df = annotate_label(prediction_probab, predictions, df)
+
+            # Combine old and new DataFrames
+            final_df = pd.concat([old_df, labelled_df], axis=0)
+
+            # Drop duplicates based on the 'text' column while keeping the first occurrence
+            final_df = final_df.drop_duplicates(
+                subset="text", keep="first", ignore_index=True
+            )
+            logging.info(
+                f"Number of rows after dropping duplicates: {final_df.shape[0]}"
+            )
+
             final_df.to_csv(YOUTUBE_DATASET_COLLECTION, index=False)
             logging.info("Combined and saved youtube CSV File")
         else:
-            logging.info("No old youtube CSV File. Creating new one")
+            logging.info("No old youtube CSV File. Creating a new one")
             dir_name = os.path.dirname(YOUTUBE_DATASET_COLLECTION)
             os.makedirs(dir_name, exist_ok=True)
-            df.drop_duplicates("text", keep="first", ignore_index=True)
-            df.to_csv(YOUTUBE_DATASET_COLLECTION, index=False)
+
+            labelled_df = annotate_label(prediction_probab, predictions, df)
+            labelled_df.to_csv(YOUTUBE_DATASET_COLLECTION, index=False)
+            logging.info("Annotated and saved the data")
+    except Exception as e:
+        raise YoutubeException(e, sys)
+
+
+def annotate_label(prediction_probab, predictions, df):
+    try:
+        if "label" not in df.columns:
+            df["label"] = None
+
+        logging.info(f"Applying labels to {len(predictions)} rows")
+
+        # Iterate through each row to apply labels
+        for i in range(len(predictions)):
+            if predictions[i] == 0:
+                if prediction_probab[i][0] > 0.8:
+                    df.loc[i, "label"] = 0
+                elif prediction_probab[i][1] > 0.8:
+                    df.loc[i, "label"] = 1
+            elif predictions[i] == 1 and prediction_probab[i][1] > 0.8:
+                df.loc[i, "label"] = 1
+
+        logging.info(f"Number of rows before dropping unlabeled: {df.shape[0]}")
+
+        # Drop rows where 'label' is None (NaN)
+        df_dropped = df.dropna(subset=["label"])
+
+        logging.info(f"Number of rows after dropping unlabeled: {df_dropped.shape[0]}")
+
+        # Reset index after dropping rows
+        df_reset = df_dropped.reset_index(drop=True)
+        return df_reset
     except Exception as e:
         raise YoutubeException(e, sys)

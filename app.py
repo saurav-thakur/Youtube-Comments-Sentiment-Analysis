@@ -75,8 +75,11 @@ async def predict(youtube_url: str):
         prediction, predicted_class = prediction_pipeline.predict(df)
         prediction_np = prediction.numpy()
         prediction_list = prediction_np.tolist()  # Convert to Python list
-
-        retain_youtube_csv_files(df)
+        print(f"prediction_list {prediction_list}")
+        print(f"predicted_class {predicted_class}")
+        retain_youtube_csv_files(
+            df, prediction_probab=predicted_class, predictions=prediction_list
+        )
         # Now use the list with Counter
         counter = Counter(prediction_list)
 
